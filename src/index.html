@@ -8,7 +8,11 @@
 <body>
     <h1>Metronome</h1>
     <button id="startBtn">Start</button>
-    <button id="stopBtn">Stop</button>
+    <button id="stopBtn" disabled>Stop</button>
+    
+    <label for="bpmRange">BPM:</label>
+    <input type="range" id="bpmRange" min="40" max="250" value="120">
+    <span id="bpmValue">120</span>
 
     <script>
 // ___BUILDSCRIPT_INJECTS_JS_HERE___
