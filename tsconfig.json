@@ -7,10 +7,11 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "removeComments": true,
-    "sourceMap": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
     "rootDir": "./src/",
     "outDir": "./dist/",
-    "lib": ["DOM", "DOM.Iterable", "ES2022"]
+    "lib": ["DOM", "DOM.Iterable", "WebWorker", "ES2022"]
   },
-  "include": ["src/index.ts"],
+  "include": ["src/main.ts", "src/worker.ts"],
 }
