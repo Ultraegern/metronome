@@ -21,13 +21,15 @@ _minify:
         -o dist/index.js
 
 _bundle:
-    @echo "{{ C }}Bundling...{{ N }}"
-    python3 -c '\
-    js = open("dist/index.js").read(); \
-    src_html = open("src/index.html").read(); \
-    final_html = src_html.replace("// ___BUILDSCRIPT_INJECTS_JS_HERE___", js); \
-    open("dist/index.html", "w").write(final_html); \
-    '
+    #!/usr/bin/env python3
+    print("{{ C }}Bundling...{{ N }}")
+
+    js = open("dist/index.js").read()
+    src_html = open("src/index.html").read()
+
+    final_html = src_html.replace("// ___BUILDSCRIPT_INJECTS_JS_HERE___", js)
+
+    open("dist/index.html", "w").write(final_html)
 
 # Build and bundle
 build: clean _build-ts _bundle
