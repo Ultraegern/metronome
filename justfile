@@ -1,4 +1,5 @@
 set windows-shell := ["C:\\Program Files\\Git\\bin\\sh.exe", "-cu"]
+export PATH := if os_family() == "windows" { home_dir() + "/.local/bin;" + env_var("PATH") } else { env_var("PATH") }
 
 C := CYAN + BOLD
 G := GREEN + BOLD
