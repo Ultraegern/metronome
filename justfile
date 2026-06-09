@@ -16,12 +16,12 @@ init:
 
 _build-ts:
     @echo "{{ C }}Compiling TypeScript...{{ N }}"
-    mkdir -p dist
-    ./node_modules/.bin/tsc
+    @mkdir -p dist
+    @./node_modules/.bin/tsc
 
 _minify-worker:
     @echo "{{ C }}Minifying...{{ N }}"
-    ./node_modules/.bin/terser dist/worker.js \
+    @./node_modules/.bin/terser dist/worker.js \
         --compress passes=2,toplevel=true \
         --mangle toplevel=true \
         --no-map \
@@ -42,7 +42,7 @@ _inline-worker:
 
 _minify-index:
     @echo "{{ C }}Minifying...{{ N }}"
-    ./node_modules/.bin/terser dist/index.js \
+    @./node_modules/.bin/terser dist/index.js \
         --compress passes=2,toplevel=true \
         --mangle toplevel=true \
         --no-map \
@@ -61,16 +61,16 @@ _bundle:
 
 # Build and bundle
 build: clean _build-ts _inline-worker _bundle
-    @echo "{{ G }}Done! App available at dist/index.html{{ N }}"
+    @echo "{{ G }}Done!{{ N + C }} App available at dist/index.html{{ N }}"
 
 # Build, minify and bundle
 build-release: clean _build-ts _minify-worker _inline-worker _minify-index _bundle
-    @echo "{{ G }}Done! App available at dist/index.html{{ N }}"
+    @echo "{{ G }}Done!{{ N + C }} App available at dist/index.html{{ N }}"
 
 # Open in Firefox
 open:
-    firefox ./dist/index.html
+    @firefox ./dist/index.html
 
 # Clean build directory
 clean:
-    rm -rf dist/*
+    @rm -rf dist/*
