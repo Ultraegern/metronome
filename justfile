@@ -7,15 +7,21 @@ N := NORMAL
 _default:
     @just --list
 
+# Install dependencies
+init:
+    @echo "{{ C }}Installing dependencies...{{ N }}"
+    @npm install
+    @echo "{{ G }}Done!{{ N }}"
+
 _build-ts:
     @echo "{{ C }}Compiling TypeScript...{{ N }}"
     mkdir -p dist
-    tsc
+    ./node_modules/.bin/tsc
 
 _minify:
     @echo "{{ C }}Minifying...{{ N }}"
     rm -f dist/index.js.map
-    npx terser dist/index.js \
+    ./node_modules/.bin/terser dist/index.js \
         --compress passes=2,toplevel=true \
         --mangle toplevel=true \
         -o dist/index.js
