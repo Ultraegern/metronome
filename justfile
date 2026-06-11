@@ -16,43 +16,44 @@ init:
 
 _build-ts:
     @echo "{{ C }}Compiling TypeScript...{{ N }}"
+    @mkdir -p build
     @mkdir -p dist
     @./node_modules/.bin/tsc
 
 _minify-worker:
     @echo "{{ C }}Minifying...{{ N }}"
-    @./node_modules/.bin/terser dist/worker.js \
+    @./node_modules/.bin/terser build/worker.js \
         --compress passes=2,toplevel=true \
         --mangle toplevel=true \
         --no-map \
-        -o dist/worker.js
+        -o build/worker.js
 
 _inline-worker:
     #!/usr/bin/env python3
     print("{{ C }}Inlining worker thread...{{ N }}")
 
-    main_js = open("dist/main.js", "r", encoding="utf-8").read()
-    worker_js = open("dist/worker.js", "r", encoding="utf-8").read()
+    main_js = open("build/main.js", "r", encoding="utf-8").read()
+    worker_js = open("build/worker.js", "r", encoding="utf-8").read()
 
     worker_js = worker_js.replace("`", "\\`").replace("${", "\\${")
 
     final_js = main_js.replace("___BUILDSCRIPT_INLINES_WORKER_JS_HERE___", worker_js)
 
-    open("dist/index.js", "w").write(final_js)
+    open("build/index.js", "w").write(final_js)
 
 _minify-index:
     @echo "{{ C }}Minifying...{{ N }}"
-    @./node_modules/.bin/terser dist/index.js \
+    @./node_modules/.bin/terser build/index.js \
         --compress passes=2,toplevel=true \
         --mangle toplevel=true \
         --no-map \
-        -o dist/index.js
+        -o build/index.js
 
 _bundle:
     #!/usr/bin/env python3
     print("{{ C }}Bundling...{{ N }}")
 
-    js = open("dist/index.js").read()
+    js = open("build/index.js").read()
     src_html = open("src/index.html").read()
 
     final_html = src_html.replace("// ___BUILDSCRIPT_INJECTS_JS_HERE___", js)
@@ -73,4 +74,5 @@ open:
 
 # Clean build directory
 clean:
-    @rm -rf dist/*
+    @rm -rf build
+    @rm -rf dist

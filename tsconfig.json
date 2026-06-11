@@ -10,7 +10,7 @@
     "inlineSourceMap": true,
     "inlineSources": true,
     "rootDir": "./src/",
-    "outDir": "./dist/",
+    "outDir": "./build/",
     "lib": ["DOM", "DOM.Iterable", "WebWorker", "ES2022"]
   },
   "include": ["src/main.ts", "src/worker.ts"],
