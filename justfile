@@ -16,13 +16,11 @@ init:
 
 _build-ts:
     @echo "{{ C }}Compiling TypeScript...{{ N }}"
-    @mkdir -p build
-    @mkdir -p dist
-    @./node_modules/.bin/tsc
+    @npx tsc
 
 _minify-worker:
     @echo "{{ C }}Minifying...{{ N }}"
-    @./node_modules/.bin/terser build/worker.js \
+    @npx terser build/worker.js \
         --compress passes=2,toplevel=true \
         --mangle toplevel=true \
         --no-map \
@@ -39,33 +37,42 @@ _inline-worker:
 
     final_js = main_js.replace("___BUILDSCRIPT_INLINES_WORKER_JS_HERE___", worker_js)
 
-    open("build/index.js", "w").write(final_js)
+    open("build/index.js", "w", encoding="utf-8").write(final_js)
 
 _minify-index:
     @echo "{{ C }}Minifying...{{ N }}"
-    @./node_modules/.bin/terser build/index.js \
+    @npx terser build/index.js \
         --compress passes=2,toplevel=true \
         --mangle toplevel=true \
         --no-map \
         -o build/index.js
 
+_minify-css:
+    @echo "{{ C }}Minifying CSS...{{ N }}"
+    @npx lightningcss --minify src/style.css -o build/style.css
+
+_copy-css:
+    @cp src/style.css build/style.css
+
 _bundle:
     #!/usr/bin/env python3
     print("{{ C }}Bundling...{{ N }}")
 
-    js = open("build/index.js").read()
-    src_html = open("src/index.html").read()
+    js = open("build/index.js", "r", encoding="utf-8").read()
+    css = open("build/style.css", "r", encoding="utf-8").read()
+    src_html = open("src/index.html", "r", encoding="utf-8").read()
 
-    final_html = src_html.replace("// ___BUILDSCRIPT_INJECTS_JS_HERE___", js)
+    final_html = src_html.replace("/* ___BUILDSCRIPT_INJECTS_JS_HERE___  */", js)
+    final_html = final_html.replace("/* ___BUILDSCRIPT_INJECTS_CSS_HERE___ */", css)
 
-    open("dist/index.html", "w").write(final_html)
+    open("dist/index.html", "w", encoding="utf-8").write(final_html)
 
 # Build and bundle
-build: clean _build-ts _inline-worker _bundle
+build: clean _build-ts _inline-worker _copy-css _bundle
     @echo "{{ G }}Done!{{ N + C }} App available at dist/index.html{{ N }}"
 
 # Build, minify and bundle
-build-release: clean _build-ts _minify-worker _inline-worker _minify-index _bundle
+build-release: clean _build-ts _minify-worker _inline-worker _minify-index _minify-css _bundle
     @echo "{{ G }}Done!{{ N + C }} App available at dist/index.html{{ N }}"
 
 # Open in Firefox
@@ -74,5 +81,5 @@ open:
 
 # Clean build directory
 clean:
-    @rm -rf build
-    @rm -rf dist
+    @rm -rf build dist
+    @mkdir -p build dist

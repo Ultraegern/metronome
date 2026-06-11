@@ -1,21 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Metronome</title>
-    <style>/* Your CSS here */</style>
+  <meta charset="UTF-8">
+  <title>Metronome</title>
+  <style>
+/* ___BUILDSCRIPT_INJECTS_CSS_HERE___ */
+  </style>
 </head>
 <body>
+  <main>
     <h1>Metronome</h1>
-    <button id="startBtn">Start</button>
-    <button id="stopBtn" disabled>Stop</button>
+    <div class="control-group">
+      <button id="startBtn">Start</button>
+      <button id="stopBtn" disabled>Stop</button>
+    </div>
     
-    <label for="bpmRange">BPM:</label>
-    <input type="range" id="bpmRange" min="40" max="250" value="120">
-    <span id="bpmValue">120</span>
+    <div class="control-group">
+      <label for="bpmRange">BPM:</label>
+      <input type="range" id="bpmRange" min="40" max="250" value="120">
+      <span id="bpmValue">120</span>
+    </div>
 
-    <script>
-// ___BUILDSCRIPT_INJECTS_JS_HERE___
-    </script>
+    <div class="control-group">
+      <label for="beatsRange">Beats:</label>
+      <input type="range" id="beatsRange" min="1" max="10" value="4">
+      <span id="beatsValue">4</span>
+    </div>
+
+    <div class="control-group">
+      <label for="patternSelect">Subbeat Preset:</label>
+      <select id="patternSelect">
+        <option data-mask="[true]">𝅘𝅥 Quarter</option>
+        <option data-mask="[true, true]">𝅘𝅥𝅮𝅘𝅥𝅮 Eighth</option>
+        <option data-mask="[true, true, true]">𝅘𝅥𝅮𝅘𝅥𝅮𝅘𝅥𝅮 Triplets</option>
+        <option data-mask="[true, false, true]">𝅘𝅥𝅮𝄾𝅘𝅥𝅮 Triplets (Syncopated)</option>
+        <option data-mask="[true, true, true, true]">𝅘𝅥𝅯𝅘𝅥𝅯𝅘𝅥𝅯𝅘𝅥𝅯 Sixteenths</option>
+        <option data-mask="[true, false, false, true]">𝅘𝅥𝅯𝄿𝄿𝅘𝅥𝅯 Sixteenths (Gallop)</option>
+      </select>
+    </div>
+  </main>
+
+  <script>
+/* ___BUILDSCRIPT_INJECTS_JS_HERE___  */
+  </script>
 </body>
 </html>

@@ -196,24 +196,25 @@ function bootstrapWorker(): Worker {
  * Orchestrates DOM element binding and application initialization.
  */
 function initApp(): void {
-    // 1. Target basic structural UI nodes
     const startBtn = document.getElementById('startBtn') as HTMLButtonElement;
     const stopBtn = document.getElementById('stopBtn') as HTMLButtonElement;
     const bpmRange = document.getElementById('bpmRange') as HTMLInputElement;
     const bpmValue = document.getElementById('bpmValue') as HTMLSpanElement;
+    const beatsRange = document.getElementById('beatsRange') as HTMLInputElement;
+    const beatsValue = document.getElementById('beatsValue') as HTMLSpanElement;
+    const patternSelect = document.getElementById('patternSelect') as HTMLSelectElement;
 
-    // 2. Setup your default metronome data profile
     const initialConfig: MetronomeConfig = {
         beatsPerMinute: 120,
         beatsPerMeasure: 4,
         markFirstBeat: true,
         subbeatPattern: {
-            subdivisions: 2,
-            mask: [true, true]
+            subdivisions: 1,
+            mask: [true]
         }
     };
 
-    // 3. Spin up the background worker and engine instances
+    // Spin up the background worker and engine instances
     const worker = bootstrapWorker();
     const metronome = new MetronomeEngine(initialConfig, worker);
 
@@ -233,12 +234,39 @@ function initApp(): void {
     bpmRange.addEventListener('input', (event) => {
         const target = event.target as HTMLInputElement;
         const newBpm = parseInt(target.value, 10);
-        
-        // Update visual display text label
         bpmValue.textContent = newBpm.toString();
-        
-        // Update the operational configuration properties on the fly
         metronome.updateConfig({ beatsPerMinute: newBpm });
+    });
+
+    beatsRange.addEventListener('input', (event) => {
+        const target = event.target as HTMLInputElement;
+        const newBeats = parseInt(target.value, 10);
+        beatsValue.textContent = newBeats.toString();
+        metronome.updateConfig({ beatsPerMeasure: newBeats });
+    });
+
+    patternSelect.addEventListener('change', () => {
+        const selectedOption = patternSelect.options[patternSelect.selectedIndex];
+        const maskAttr = selectedOption.getAttribute('data-mask');
+        
+        if (maskAttr) {
+            try {
+                // Parse the string layout array safely into a true boolean element matrix
+                const parsedMask: boolean[] = JSON.parse(maskAttr);
+                
+                // Subdivisions inherently equal total array slots assigned
+                const subdivisionCount = parsedMask.length;
+
+                metronome.updateConfig({
+                    subbeatPattern: {
+                        subdivisions: subdivisionCount,
+                        mask: parsedMask
+                    }
+                });
+            } catch (err) {
+                console.error("Failed to parse pattern mask configuration format:", err);
+            }
+        }
     });
 }
 
