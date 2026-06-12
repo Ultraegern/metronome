@@ -75,7 +75,7 @@ class MetronomeEngine {
 
         this.isPlaying = true;
         this.currentBeatIndex = 0;
-        
+
         // Lock timing onto the exact current time of the hardware clock
         this.nextBeatTime = this.audioCtx.currentTime;
 
@@ -144,10 +144,10 @@ class MetronomeEngine {
             if (!mask[i]) continue;
 
             const targetTime = beatStartTimeSeconds + (i * subbeatStepSeconds);
-            
+
             // Assign specific frequencies to give auditory cues to the performer
             let frequencyHz = 600; // Base subbeat tick profile
-            
+
             if (i === 0) {
                 // Downbeats are louder/higher; primary measure hits are accented if requested
                 frequencyHz = (beatIndex === 0 && this.config.markFirstBeat) ? 1200 : 900;
@@ -248,12 +248,12 @@ function initApp(): void {
     patternSelect.addEventListener('change', () => {
         const selectedOption = patternSelect.options[patternSelect.selectedIndex];
         const maskAttr = selectedOption.getAttribute('data-mask');
-        
+
         if (maskAttr) {
             try {
                 // Parse the string layout array safely into a true boolean element matrix
                 const parsedMask: boolean[] = JSON.parse(maskAttr);
-                
+
                 // Subdivisions inherently equal total array slots assigned
                 const subdivisionCount = parsedMask.length;
 

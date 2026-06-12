@@ -11,7 +11,15 @@
     "inlineSources": true,
     "rootDir": "./src/",
     "outDir": "./build/",
-    "lib": ["DOM", "DOM.Iterable", "WebWorker", "ES2022"]
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "WebWorker",
+      "ES2022"
+    ]
   },
-  "include": ["src/main.ts", "src/worker.ts"],
+  "include": [
+    "src/main.ts",
+    "src/worker.ts"
+  ],
 }

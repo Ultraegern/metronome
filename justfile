@@ -1,6 +1,6 @@
 set windows-shell := ["C:\\Program Files\\Git\\bin\\sh.exe", "-cu"]
-export PATH := if os_family() == "windows" { home_dir() + "/.local/bin;" + env_var("PATH") } else { env_var("PATH") }
 
+export PATH := if os_family() == "windows" { home_dir() + "/.local/bin;" + env_var("PATH") } else { env_var("PATH") }
 C := CYAN + BOLD
 G := GREEN + BOLD
 N := NORMAL
@@ -72,12 +72,12 @@ _inline-css-source-map:
 
     css = open("build/style.css", "r", encoding="utf-8").read()
     map_data = open("build/style.css.map", "rb").read()
-    
+
     b64_map = base64.b64encode(map_data).decode("utf-8")
     inline_comment = f"/*# sourceMappingURL=data:application/json;base64,{b64_map} */"
-    
+
     css = css.replace("/*# sourceMappingURL=build/style.css.map */", inline_comment)
-        
+
     open("build/style.css", "w", encoding="utf-8").write(css)
 
 _bundle:
