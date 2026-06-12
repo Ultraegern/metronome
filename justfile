@@ -71,10 +71,10 @@ _inline-css-source-map:
     print("{{ C }}Inlining CSS source map...{{ N }}")
 
     css = open("build/style.css", "r", encoding="utf-8").read()
-    map_data = open("build/style.css.map", "rb").read()
+    sourcemap = open("build/style.css.map", "rb").read()
 
-    b64_map = base64.b64encode(map_data).decode("utf-8")
-    inline_comment = f"/*# sourceMappingURL=data:application/json;base64,{b64_map} */"
+    b64_sourcemap = base64.b64encode(sourcemap).decode("utf-8")
+    inline_comment = f"/*# sourceMappingURL=data:application/json;base64,{b64_sourcemap} */"
 
     css = css.replace("/*# sourceMappingURL=build/style.css.map */", inline_comment)
 
