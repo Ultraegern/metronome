@@ -19,10 +19,11 @@ _build-ts:
     @npx tsc
 
 _minify-worker:
-    @echo "{{ C }}Minifying...{{ N }}"
+    @echo "{{ C }}Minifying JS...{{ N }}"
     @npx terser build/worker.js \
-        --compress passes=2,toplevel=true \
+        --compress passes=2,toplevel=true,ecma=2022 \
         --mangle toplevel=true \
+        --ecma 2022 \
         --no-map \
         -o build/worker.js
 
@@ -40,19 +41,44 @@ _inline-worker:
     open("build/index.js", "w", encoding="utf-8").write(final_js)
 
 _minify-index:
-    @echo "{{ C }}Minifying...{{ N }}"
+    @echo "{{ C }}Minifying JS...{{ N }}"
     @npx terser build/index.js \
-        --compress passes=2,toplevel=true \
+        --compress passes=2,toplevel=true,ecma=2022 \
         --mangle toplevel=true \
+        --ecma 2022 \
         --no-map \
         -o build/index.js
 
 _minify-css:
     @echo "{{ C }}Minifying CSS...{{ N }}"
-    @npx lightningcss --minify src/style.css -o build/style.css
+    @npx lightningcss \
+        --targets "since 2022" \
+        --minify \
+        src/style.css \
+        -o build/style.css
 
-_copy-css:
-    @cp src/style.css build/style.css
+_map-css:
+    @echo "{{ C }}Generating CSS Source Maps...{{ N }}"
+    @npx lightningcss \
+        --targets "since 2022" \
+        --sourcemap \
+        src/style.css \
+        -o build/style.css
+
+_inline-css-source-map:
+    #!/usr/bin/env python3
+    import base64
+    print("{{ C }}Inlining CSS source map...{{ N }}")
+
+    css = open("build/style.css", "r", encoding="utf-8").read()
+    map_data = open("build/style.css.map", "rb").read()
+    
+    b64_map = base64.b64encode(map_data).decode("utf-8")
+    inline_comment = f"/*# sourceMappingURL=data:application/json;base64,{b64_map} */"
+    
+    css = css.replace("/*# sourceMappingURL=build/style.css.map */", inline_comment)
+        
+    open("build/style.css", "w", encoding="utf-8").write(css)
 
 _bundle:
     #!/usr/bin/env python3
@@ -67,12 +93,22 @@ _bundle:
 
     open("dist/index.html", "w", encoding="utf-8").write(final_html)
 
+_minify-html:
+    @echo "{{ C }}Minifying HTML...{{ N }}"
+    @npx html-minifier-terser \
+        --collapse-whitespace \
+        --remove-comments \
+        --remove-redundant-attributes \
+        --use-short-doctype \
+        dist/index.html \
+        -o dist/index.html
+
 # Build and bundle
-build: clean _build-ts _inline-worker _copy-css _bundle
+build: clean _build-ts _inline-worker _map-css _inline-css-source-map _bundle
     @echo "{{ G }}Done!{{ N + C }} App available at dist/index.html{{ N }}"
 
 # Build, minify and bundle
-build-release: clean _build-ts _minify-worker _inline-worker _minify-index _minify-css _bundle
+build-release: clean _build-ts _minify-worker _inline-worker _minify-index _minify-css _bundle _minify-html
     @echo "{{ G }}Done!{{ N + C }} App available at dist/index.html{{ N }}"
 
 # Open in Firefox
