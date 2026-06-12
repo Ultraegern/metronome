@@ -1,3 +1,40 @@
+:root {
+  --bg-body: oklch(21% 0 0);
+  --bg-container: oklch(27% 0 0);
+  --bg-disabled: oklch(31% 0 0);
+
+
+  --text-main: oklch(91% 0 0);
+  --text-muted: oklch(74% 0 0);
+  --text-disabled: oklch(46% 0 0);
+
+  --accent-color: oklch(64% 0.22 37);
+  --accent-hover: oklch(50% 0.17 37);
+
+  --input-bg: oklch(31% 0 0);
+  --input-border: oklch(39% 0 0);
+
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --transition-speed: 0.3s;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg-body: oklch(96% 0.01 250);
+    --bg-container: oklch(100% 0 0);
+    --bg-disabled: oklch(92% 0.01 250);
+
+    --text-main: oklch(24% 0 0);
+    --text-muted: oklch(51% 0.01 250);
+    --text-disabled: oklch(76% 0.01 250);
+
+    --input-bg: oklch(100% 0 0);
+    --input-border: oklch(86% 0 0);
+
+    --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+}
+
 body {
   font-family: Helvetica, sans-serif;
   margin: 0;
@@ -6,24 +43,91 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f5f5f5;
+  background-color: var(--bg-body);
+  color: var(--text-main);
 }
 
 main {
-  background: white;
   padding: 30px;
   border-radius: 8px;
-  box-shadow: 0 4px 6px #0000001a;
   width: 100%;
   max-width: 400px;
   box-sizing: border-box;
+  align-items: center;
+  background: var(--bg-container);
+  box-shadow: var(--shadow);
+}
+
+h1 {
+  margin-top: 0;
+  margin-bottom: 24px;
+  font-size: 24px;
+  text-align: center;
 }
 
 .control-group {
-  margin: 15px 0;
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  min-width: 100px;
+  gap: 12px;
 }
 
 label {
   font-weight: bold;
-  margin-right: 10px;
+  min-width: 110px;
+}
+
+span {
+  font-variant-numeric: tabular-nums;
+  font-weight: bold;
+  text-align: right;
+  color: var(--text-main);
+}
+
+button,
+select,
+input[type="range"] {
+  font-size: 14px;
+}
+
+button {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  background-color: var(--accent-color);
+  color: var(--text-main);
+}
+
+button:hover:not(:disabled) {
+  background-color: var(--accent-hover);
+}
+
+button:disabled {
+  background-color: var(--bg-disabled);
+  color: var(--text-disabled);
+  cursor: not-allowed;
+}
+
+input[type="range"] {
+  flex: 1;
+  accent-color: var(--accent-color);
+}
+
+select {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: inherit;
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-border);
+}
+
+.tempo-display {
+  white-space: nowrap;
+  display: inline-block;
 }

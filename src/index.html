@@ -18,9 +18,12 @@
     </div>
 
     <div class="control-group">
-      <label for="bpmRange">BPM:</label>
+      <label for="bpmRange">Tempo:</label>
       <input type="range" id="bpmRange" min="40" max="250" value="120">
-      <span id="bpmValue">120</span>
+      <div class="tempo-display">
+        <span id="bpmValue">120</span>
+        <label for="bpmValue">BPM</label>
+      </div>
     </div>
 
     <div class="control-group">
@@ -30,7 +33,7 @@
     </div>
 
     <div class="control-group">
-      <label for="patternSelect">Subbeat Preset:</label>
+      <label for="patternSelect">Subdivision:</label>
       <select id="patternSelect">
         <option data-mask="[true]">𝅘𝅥 Quarter</option>
         <option data-mask="[true, true]">𝅘𝅥𝅮𝅘𝅥𝅮 Eighth</option>
