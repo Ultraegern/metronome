@@ -57,28 +57,8 @@ _minify-css:
         src/style.css \
         -o build/style.css
 
-_map-css:
-    @echo "{{ C }}Generating CSS Source Maps...{{ N }}"
-    @npx lightningcss \
-        --targets "since 2022" \
-        --sourcemap \
-        src/style.css \
-        -o build/style.css
-
-_inline-css-source-map:
-    #!/usr/bin/env python3
-    import base64
-    print("{{ C }}Inlining CSS source map...{{ N }}")
-
-    css = open("build/style.css", "r", encoding="utf-8").read()
-    sourcemap = open("build/style.css.map", "rb").read()
-
-    b64_sourcemap = base64.b64encode(sourcemap).decode("utf-8")
-    inline_comment = f"/*# sourceMappingURL=data:application/json;base64,{b64_sourcemap} */"
-
-    css = css.replace("/*# sourceMappingURL=build/style.css.map */", inline_comment)
-
-    open("build/style.css", "w", encoding="utf-8").write(css)
+_copy-css:
+    @cp src/style.css build/style.css
 
 _bundle:
     #!/usr/bin/env python3
@@ -104,7 +84,7 @@ _minify-html:
         -o dist/index.html
 
 # Build and bundle
-build: clean _build-ts _inline-worker _map-css _inline-css-source-map _bundle
+build: clean _build-ts _inline-worker _copy-css _bundle
     @echo "{{ G }}Done!{{ N + C }} App available at dist/index.html{{ N }}"
 
 # Build, minify and bundle
