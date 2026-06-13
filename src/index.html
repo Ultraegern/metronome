@@ -19,18 +19,20 @@
     </div>
 
     <div class="control-group">
-      <label for="bpmRange">Tempo:</label>
-      <input type="range" id="bpmRange" min="40" max="250" value="120">
-      <div class="tempo-display">
+      <div>
+        <label for="bpmRange">Tempo:</label>
         <span id="bpmValue">120</span>
         <label for="bpmValue">BPM</label>
       </div>
+      <input type="range" id="bpmRange" min="40" max="250" value="120">
     </div>
 
     <div class="control-group">
-      <label for="beatsRange">Beats:</label>
+      <div>
+        <label for="beatsRange">Beats:</label>
+        <span id="beatsValue">4</span>
+      </div>
       <input type="range" id="beatsRange" min="1" max="10" value="4">
-      <span id="beatsValue">4</span>
     </div>
 
     <div class="control-group">
@@ -46,7 +48,7 @@
     </div>
   </main>
   <footer>
-    Source
+    <a href="https://github.com/Ultraegern/metronome">Source</a>
   </footer>
 
   <script>
