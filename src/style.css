@@ -68,6 +68,13 @@ main {
   flex-direction: column;
   align-items: stretch;
   gap: 1rem;
+
+  span {
+    font-variant-numeric: tabular-nums;
+    font-weight: bold;
+    text-align: right;
+    color: var(--text-main);
+  }
 }
 
 footer {
@@ -110,13 +117,6 @@ button {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-}
-
-span {
-  font-variant-numeric: tabular-nums;
-  font-weight: bold;
-  text-align: right;
-  color: var(--text-main);
 }
 
 button:hover:not(:disabled) {

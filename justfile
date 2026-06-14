@@ -70,9 +70,11 @@ _bundle:
     js = open("build/index.js", "r", encoding="utf-8").read()
     css = open("build/style.css", "r", encoding="utf-8").read()
     src_html = open("src/index.html", "r", encoding="utf-8").read()
+    version = open("VERSION", "r", encoding="utf-8").read()
 
     final_html = src_html.replace("/* ___BUILDSCRIPT_INJECTS_JS_HERE___  */", js)
     final_html = final_html.replace("/* ___BUILDSCRIPT_INJECTS_CSS_HERE___ */", css)
+    final_html = final_html.replace("___BUILDSCRIPT_INJECTS_VERSION_HERE___", version)
 
     open("dist/index.html", "w", encoding="utf-8").write(final_html)
 
