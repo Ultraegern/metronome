@@ -1,0 +1,14 @@
+{
+    "name": "Metronome",
+    "short_name": "Metronome",
+    "description": "TODO",
+    "icons": [
+        {
+            "src": "src/TODO.svg",
+            "type": "image/svg+xml",
+            "sizes": "any"
+        }
+    ],
+    "display": "standalone",
+    "start_url": "./"
+}
