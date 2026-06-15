@@ -92,18 +92,23 @@ _generate-manifest-url:
 
 _bundle:
     #!/usr/bin/env python3
+    import os
     print("{{ C }}Bundling...{{ N }}")
 
     js = open("build/index.js", "r", encoding="utf-8").read()
     css = open("build/style.css", "r", encoding="utf-8").read()
     src_html = open("src/index.html", "r", encoding="utf-8").read()
     version = open("VERSION", "r", encoding="utf-8").read()
-    manifest_url = open("build/webmanifest.json.url", "r", encoding="utf-8").read()
 
     final_html = src_html.replace("/* ___BUILDSCRIPT_INJECTS_JS_HERE___  */", js)
     final_html = final_html.replace("/* ___BUILDSCRIPT_INJECTS_CSS_HERE___ */", css)
     final_html = final_html.replace("___BUILDSCRIPT_INJECTS_VERSION_HERE___", version)
-    final_html = final_html.replace("___BUILDSCRIPT_INJECTS_WEB_MANIFEST_HERE___", manifest_url)
+
+    if os.path.exists("build/webmanifest.json.url"):
+        manifest_url = open("build/webmanifest.json.url", "r", encoding="utf-8").read()
+        final_html = final_html.replace("___BUILDSCRIPT_INJECTS_WEB_MANIFEST_HERE___", manifest_url)
+    else:
+        final_html = final_html.replace("""<link rel="manifest" href="___BUILDSCRIPT_INJECTS_WEB_MANIFEST_HERE___">""", "")
 
     open("dist/index.html", "w", encoding="utf-8").write(final_html)
 
@@ -123,6 +128,10 @@ build: clean _build-ts _inline-worker _copy-css _inline-icon _generate-manifest-
 
 # Build, minify and bundle
 build-release: clean _build-ts _minify-worker _inline-worker _minify-index _minify-css _inline-icon _generate-manifest-url _bundle _minify-html
+    @echo "{{ G }}Done!{{ N + C }} App available at dist/index.html{{ N }}"
+
+# Build, minify, strip and bundle
+build-ultra-small: clean _build-ts _minify-worker _inline-worker _minify-index _minify-css _bundle _minify-html
     @echo "{{ G }}Done!{{ N + C }} App available at dist/index.html{{ N }}"
 
 # Open in Firefox
