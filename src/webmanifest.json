@@ -6,7 +6,7 @@
         {
             "src": "___BUILDSCRIPT_INLINES_ICON_HERE___",
             "type": "image/svg+xml",
-            "sizes": "any"
+            "sizes": "192x192 512x512 any"
         }
     ],
     "display": "standalone",
