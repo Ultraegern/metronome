@@ -4,7 +4,7 @@
     "description": "TODO",
     "icons": [
         {
-            "src": "src/TODO.svg",
+            "src": "___BUILDSCRIPT_INLINES_ICON_HERE___",
             "type": "image/svg+xml",
             "sizes": "any"
         }
