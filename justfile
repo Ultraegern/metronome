@@ -63,22 +63,31 @@ _minify-css:
 _copy-css:
     @cp src/style.css build/style.css
 
-_inline-icon:
+_generate-icon-url:
     #!/usr/bin/env python3
     import base64
-    print("{{ C }}Inlining webmanifest icon...{{ N }}")
+    print("{{ C }}Generating icon url...{{ N }}")
 
-    manifest = open("src/webmanifest.json", "r", encoding="utf-8").read()
     svg = open("src/metronome.svg", "rb").read()
 
     b64_svg = base64.b64encode(svg).decode("utf-8")
     svg_url = f"data:image/svg+xml;base64,{b64_svg}"
 
+    open("build/icon.svg.url", "w", encoding="utf-8").write(svg_url)
+
+_inline-manifest-icon: _generate-icon-url
+    #!/usr/bin/env python3
+    import base64
+    print("{{ C }}Inlining webmanifest icon...{{ N }}")
+
+    manifest = open("src/webmanifest.json", "r", encoding="utf-8").read()
+    svg_url = open("build/icon.svg.url", "r", encoding="utf-8").read()
+
     manifest = manifest.replace("___BUILDSCRIPT_INLINES_ICON_HERE___", svg_url)
 
     open("build/webmanifest.json", "w", encoding="utf-8").write(manifest)
 
-_generate-manifest-url:
+_generate-manifest-url: _inline-manifest-icon
     #!/usr/bin/env python3
     import base64
     print("{{ C }}Generating webmanifest url...{{ N }}")
@@ -104,6 +113,12 @@ _bundle:
     final_html = final_html.replace("/* ___BUILDSCRIPT_INJECTS_CSS_HERE___ */", css)
     final_html = final_html.replace("___BUILDSCRIPT_INJECTS_VERSION_HERE___", version)
 
+    if os.path.exists("build/icon.svg.url"):
+        icon_url = open("build/icon.svg.url", "r", encoding="utf-8").read()
+        final_html = final_html.replace("___BUILDSCRIPT_INLINES_ICON_HERE___", icon_url)
+    else:
+        final_html = final_html.replace("""<link rel="icon" href="___BUILDSCRIPT_INLINES_ICON_HERE___">""", "")
+
     if os.path.exists("build/webmanifest.json.url"):
         manifest_url = open("build/webmanifest.json.url", "r", encoding="utf-8").read()
         final_html = final_html.replace("___BUILDSCRIPT_INJECTS_WEB_MANIFEST_HERE___", manifest_url)
@@ -123,11 +138,11 @@ _minify-html:
         -o dist/index.html
 
 # Build and bundle
-build: clean _build-ts _inline-worker _copy-css _inline-icon _generate-manifest-url _bundle
+build: clean _build-ts _inline-worker _copy-css _generate-manifest-url _bundle
     @echo "{{ G }}Done!{{ N + C }} App available at dist/index.html{{ N }}"
 
 # Build, minify and bundle
-build-release: clean _build-ts _minify-worker _inline-worker _minify-index _minify-css _inline-icon _generate-manifest-url _bundle _minify-html
+build-release: clean _build-ts _minify-worker _inline-worker _minify-index _minify-css _generate-manifest-url _bundle _minify-html
     @echo "{{ G }}Done!{{ N + C }} App available at dist/index.html{{ N }}"
 
 # Build, minify, strip and bundle
