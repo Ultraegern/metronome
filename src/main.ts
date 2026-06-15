@@ -223,12 +223,14 @@ function initApp(): void {
         metronome.start();
         startBtn.disabled = true;
         stopBtn.disabled = false;
+        stopBtn.focus();
     });
 
     stopBtn.addEventListener('click', () => {
         metronome.stop();
         startBtn.disabled = false;
         stopBtn.disabled = true;
+        startBtn.focus();
     });
 
     bpmRange.addEventListener('input', (event) => {
@@ -271,6 +273,3 @@ function initApp(): void {
 }
 
 window.addEventListener('DOMContentLoaded', initApp);
-
-let foo = "Hi from the main thread";
-console.log(foo);

@@ -82,5 +82,3 @@ class MetronomeWorkerState {
 
 const workerState = new MetronomeWorkerState();
 workerState.init();
-
-console.log("Hi from the worker thread");
