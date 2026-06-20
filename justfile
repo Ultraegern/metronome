@@ -137,12 +137,15 @@ _minify-html:
         dist/index.html \
         -o dist/index.html
 
+_google_search-console-verification:
+    @cp src/google2c234ff157d97827.html dist/google2c234ff157d97827.html
+
 # Build and bundle
 build: clean _build-ts _inline-worker _copy-css _generate-manifest-url _bundle
     @echo "{{ G }}Done!{{ N + C }} App available at dist/index.html{{ N }}"
 
 # Build, minify and bundle
-build-release: clean _build-ts _minify-worker _inline-worker _minify-index _minify-css _generate-manifest-url _bundle _minify-html
+build-release: clean _build-ts _minify-worker _inline-worker _minify-index _minify-css _generate-manifest-url _bundle _minify-html _google_search-console-verification
     @echo "{{ G }}Done!{{ N + C }} App available at dist/index.html{{ N }}"
 
 # Build, minify, strip and bundle
