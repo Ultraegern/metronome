@@ -1,7 +1,7 @@
 {
     "name": "Metronome",
     "short_name": "Metronome",
-    "description": "TODO",
+    "description": "A free, minimal, no-nonsense online metronome app. Includes advanced features like subdivisions.",
     "icons": [
         {
             "src": "___BUILDSCRIPT_INLINES_ICON_HERE___",
