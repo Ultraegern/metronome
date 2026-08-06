@@ -65,19 +65,18 @@ _copy-css:
 
 _generate-icon-url:
     #!/usr/bin/env python3
-    import base64
+    import urllib.parse
     print("{{ C }}Generating icon url...{{ N }}")
 
     svg = open("src/metronome.svg", "rb").read()
 
-    b64_svg = base64.b64encode(svg).decode("utf-8")
-    svg_url = f"data:image/svg+xml;base64,{b64_svg}"
+    escaped_svg = urllib.parse.quote(svg)
+    svg_url = f"data:image/svg+xml,{escaped_svg}"
 
     open("build/icon.svg.url", "w", encoding="utf-8").write(svg_url)
 
 _inline-manifest-icon: _generate-icon-url
     #!/usr/bin/env python3
-    import base64
     print("{{ C }}Inlining webmanifest icon...{{ N }}")
 
     manifest = open("src/webmanifest.json", "r", encoding="utf-8").read()
@@ -89,13 +88,13 @@ _inline-manifest-icon: _generate-icon-url
 
 _generate-manifest-url: _inline-manifest-icon
     #!/usr/bin/env python3
-    import base64
+    import urllib.parse
     print("{{ C }}Generating webmanifest url...{{ N }}")
 
     manifest = open("build/webmanifest.json", "rb").read()
 
-    b64_manifest = base64.b64encode(manifest).decode("utf-8")
-    manifest_url = f"data:application/manifest+json;base64,{b64_manifest}"
+    escaped_manifest = urllib.parse.quote(manifest)
+    manifest_url = f"data:application/manifest+json,{escaped_manifest}"
 
     open("build/webmanifest.json.url", "w", encoding="utf-8").write(manifest_url)
 

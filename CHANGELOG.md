@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Inlined favicon and web-manifest now use percent-encoding instead of base64 (reducing size from 17.55 kB to 17.02 kB uncompressed, and 8.51 kB to 5.76 kB gzipped)
+
 ## [0.1.1] - 2026-06-28
 
 ### Added
